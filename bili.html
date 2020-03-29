@@ -1,0 +1,62 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>av号BV号互转</title>
+    <script>
+        function sparkle() {
+            var table = "fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF",
+                tr = new Object();
+            for (var i = 0; i < 58; i++) {
+                tr[table[i]] = i;
+            }
+            var s = [11, 10, 3, 8, 4, 6],
+                xor = 177451812,
+                add = 8728348608;
+
+            function av(x) {
+                var r = 0;
+                for (var i = 0; i < 6; i++) {
+                    r += tr[x[s[i]]] * 58 ** i;
+                }
+                return 'av' + ((r - add) ^ xor);
+            }
+
+            function bv(x) {
+                x = (x ^ xor) + add;
+                r = "BV1  4 1 7  ".split("");
+                for (var i = 0; i < 6; i++) {
+                    r[s[i]] = table[Math.floor(x / 58 ** i) % 58];
+                }
+                return r.join("");
+            }
+            var yay = document.getElementById("in").value
+            if (yay === "") {
+                alert("请输入av号或bv号")
+            } else {
+                var out = ''
+                if (!isNaN(yay) || yay.toLowerCase().indexOf("av") != -1) {
+                    if (!isNaN(yay)) {
+                        yay = "av" + yay
+                    }
+                    out = bv(yay)
+                } else {
+                    if (yay.toLowerCase().indexOf("bv") == 0) {
+                        yay = yay.substr(2)
+                    }
+                    out = av(yay)
+                }
+                document.getElementById('out').innerHTML = '<a target="_blank" href="https://www.bilibili.com/video/' + out + '">' + out + '</a>'
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <p>某些插件可能需要av号，这里郑咩可以提供av号和BV号互转的操作</p>
+    <input type="text" id="in" placeholder="av号或BV号">
+    <input type="button" onclick="sparkle()" value="转换">
+    <h1 id="out"></h1>
+</body>
+
+</html>
